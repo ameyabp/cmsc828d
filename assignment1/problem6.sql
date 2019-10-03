@@ -1,12 +1,15 @@
-ALTER TABLE Flights ADD PRIMARY KEY(fid)
-ALTER TABLE Carriers ADD PRIMARY KEY(cid)
-ALTER TABLE Months ADD PRIMARY KEY(mid)
-ALTER TABLE Weekdays ADD PRIMARY KEY(did)
+--6.1
+ALTER TABLE Flights ADD PRIMARY KEY(fid);
+ALTER TABLE Carriers ADD PRIMARY KEY(cid);
+ALTER TABLE Months ADD PRIMARY KEY(mid);
+ALTER TABLE Weekdays ADD PRIMARY KEY(did);
 
+--6.2
 ALTER TABLE Flights ADD CONSTRAINT flights2carriers FOREIGN KEY(carrier_id) REFERENCES Carriers(cid);
 ALTER TABLE Flights ADD CONSTRAINT flights2months FOREIGN KEY(month_id) REFERENCES Months(mid);
 ALTER TABLE Flights ADD CONSTRAINT flights2weekdays FOREIGN KEY(day_of_week_id) REFERENCES Weekdays(did);
 
+--6.3
 INSERT INTO Carriers(cid, name) VALUES('IA', 'Indian Airlines');
 --answer:
 --ERROR:  duplicate KEY value violates unique CONSTRAINT "Carriers_pkey"
@@ -20,6 +23,7 @@ INSERT INTO Flights(fid, month_id, day_of_month, day_of_week_id, carrier_id, fli
 --since carrier_id='KNA' does not exist in the Carriers TABLE, such an entry addition was not allowed in Flights TABLE
 --if FOREIGN KEY CONSTRAINT was not added, the above insertion would have been allowed
 
+--6.4
 DELETE FROM Carriers WHERE cid='AA';
 --answer:
 --ERROR:  update or DELETE on TABLE Carriers violates FOREIGN KEY CONSTRAINT "flights2carriers" on TABLE Flights
