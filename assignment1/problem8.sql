@@ -1,16 +1,9 @@
---8.1
 CREATE VIEW query81 AS SELECT * FROM Flights WHERE price < 700;
---8.2
 SELECT * FROM query81 WHERE origin_city like '%Fort%' OR dest_city like '%Fort%';
---8.3
 CREATE VIEW query83 AS SELECT did, day_of_week, cid, name AS carrier_name FROM (((SELECT day_of_week_id AS did, carrier_id AS cid FROM Flights) AS query831 NATURAL JOIN Weekdays) AS query832 NATURAL JOIN Carriers) AS query833;
-
---8.4
 --Views provide a kind of a window for looking at selective attributes FROM multiple tables in the database
 --It also modularizes a resulting set of tuples FROM a TABLE, and creates a new entity or alias FROM it so that it can be used in multiple places for different queries (AS was done in my answer for 4.4 and 4.5) and even across multiple sessions, thus making it easier to write queries
 --It also makes the query easier to read by breaking it down INTO multiple independent steps so that debugging becomes easy
-
---8.5
 INSERT INTO query83(did, day_of_week, cid, carrier_name) VALUES(3, 'Wednesday', 'IA', 'Iraqi Airways');
 --answer
 --ERROR:  cannot INSERT INTO VIEW "query83"
