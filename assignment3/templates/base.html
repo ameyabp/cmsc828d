@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>CMSC828D-A3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='d3RangeSlider.css') }}" type="text/css" />
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+        <h1> Storms visualization </h1>
+        <div class="container-fluid">
+            <svg id="map" width="960" height="600"></svg>
+            <div id="slider"></div>
+            <div id="slider-text">1950-2019</div>
+            <div id="barChart"></div>
+        </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="{{ url_for('static', filename='d3RangeSlider.js') }}"></script>
+
+    <script>
+        var mapVizUrl = "{{ url_for('getMap') }}";
+        var barChartUrl = "{{ url_for('getBars') }}";
+    </script>
+    <script src="{{ url_for('static', filename='mapViz.js') }}"></script>
+    <script src="{{ url_for('static', filename='barChartViz.js') }}"></script>
+    <script src="{{ url_for('static', filename='updateViz.js') }}"></script>
+    <script src="{{ url_for('static', filename='a3.js') }}"></script>
+  </body>
+</html>

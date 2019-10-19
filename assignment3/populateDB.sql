@@ -10,9 +10,10 @@ CREATE TABLE Storms(
 	lng	float,
 	beginDate	char(10),
 	endDate	char(10),
+	year int,
 	injuries	int,
 	deaths	float,
 	damage	float
 );
 
-\copy Storms (eventID, eventType, state, stateFips, czmType, countyFips, lat, lng, beginDate, endDate, injuries, deaths, damage) FROM 'compositeStorms.csv' WITH delimiter ',' csv header;
+\copy Storms (eventID, eventType, state, stateFips, czmType, countyFips, lat, lng, beginDate, endDate, year, injuries, deaths, damage) FROM 'compositeStorms.csv' WITH delimiter ',' csv header;
