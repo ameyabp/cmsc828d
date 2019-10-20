@@ -43,10 +43,10 @@ function initD3Map(data) {
 }
 
 function updateD3Map(data) {
-    console.log("updating map");
+    //console.log("updating map");
     if (data.length == 0)
       return;
-    
+
     dataDict = data.reduce((a, d) => {a[d.statefips] = d.value; return a;}, {});
 
     colorScaleInstances = d3.scaleSequential()
@@ -56,9 +56,10 @@ function updateD3Map(data) {
                       ])
                     .interpolator(d3.interpolateBlues);
     
+    // remove old colors
     svgMap.selectAll("path").remove();
 
-      svgMap.selectAll("path").data(geoFeatures)
+    svgMap.selectAll("path").data(geoFeatures)
      .enter().append("path")
      //.attr("class", "us-states")
      .attr("d", path)
@@ -72,6 +73,20 @@ function updateD3Map(data) {
           return colorScaleInstances(0);
         }
      })
+     .on("click", updateD3Bars)    // handle mouse click
+     .on("mouseover", function(d) {
+        d3.select(this)
+          .transition().duration(200)
+          .style("fill", "red");
+     })
+     .on("mouseout", function() {
+        d3.select(this)
+          .transition().duration(200)
+          .style("fill", function(d) {
+            return colorScaleInstances(dataDict[d.id]);
+          });
+     });
+     
      //.append("title")
      //.text("Map visualization");
 

@@ -19,8 +19,8 @@ def getMap():
         endYear = newRange["end"]
         cursor.execute(f'select stateFips, count(*) as value from storms where state is not null and year between {beginYear} and {endYear} group by stateFips;')
         mapData = json.dumps(cursor.fetchall())
-        print("getMap called")
-        print(mapData)
+        #print("getMap called")
+        #print(mapData)
     else:
         print(request.method)
 
@@ -30,7 +30,7 @@ def getMap():
 def getBars():
     if request.method == 'POST':
         newRange = json.loads(request.data)
-        state = newRange["place"]
+        stateFips = newRange["stateFips"]
         #print("range received:", beginYear, endYear)
         cursor.execute(f"select year, count(*) as value from storms where state=\'{state}\' group by year;")
         #cursor.execute(f"select state, count(*) as value from storms where year between {beginYear} and {endYear} group by state order by value desc;")

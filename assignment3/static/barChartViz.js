@@ -75,6 +75,19 @@ function initD3Bars(data) {
            .attr("transform", "rotate(-90)");
 }
 
-function updateD3Bars() {
-  console.log("update bars");
+function updateD3Bars(d, i) {
+  console.log("update bars for state with fips", d.id);
+      d3.json("/getBars", {
+        method: "POST",
+        body: JSON.stringify({
+            stateFips: d.id
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+      .then(function(data) {
+        console.log(data);
+        initD3Bars(data);
+      });
 }

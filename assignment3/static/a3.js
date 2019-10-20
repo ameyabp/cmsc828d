@@ -94,7 +94,7 @@ function updateMap(beginYear, endYear) {
         }
     })
     .then(function(data) {
-        console.log(data);
+        //console.log(data);
         updateD3Map(data);
     });
 }
