@@ -1,6 +1,6 @@
 var group = "All";
 
-function initD3Bars(data) {
+function initD3Bars(data, stateFips) {
     //var basics = d3BarChartBase();
     var margin = {top: 30, right: 5, bottom: 20, left: 50};
     var width = Math.round(Number(d3.select("#barChart").style('width').slice(0, -2))) - margin.left - margin.right;
@@ -33,7 +33,7 @@ function initD3Bars(data) {
        .attr("y", misc.title)
        .attr("class", "title")
        .attr("text-anchor", "middle")
-       .text("Number of instances per state");
+       .text("Number of instances per year for " + stateFips2Names[parseInt(stateFips)]);
 
     var plot = svg.append("g")
                   .attr("transform", "translate(" + margin.left + "," + (margin.top + misc.yLabel) + ")");
@@ -88,6 +88,6 @@ function updateD3Bars(d, i) {
     })
       .then(function(data) {
         console.log(data);
-        initD3Bars(data);
+        initD3Bars(data, d.id);
       });
 }

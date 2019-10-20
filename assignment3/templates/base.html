@@ -17,7 +17,12 @@
         <div class="container-fluid">
             <svg id="map" width="960" height="600"></svg>
             <div id="slider"></div>
-            <div id="slider-text">1950-2019</div>
+            <div id="slider-text"></div>
+            <div id="radioBox">
+                <input type="radio" name="dependentVariable" id="instances" value="instances" class="checkbox" checked>Instances</input>
+                <input type="radio" name="dependentVariable" id="injuries" value="injuries" class="checkbox" >Injuries</input>
+                <input type="radio" name="dependentVariable" id="deaths" value="deaths" class="checkbox" >Deaths</input>
+            </div>
             <div id="barChart"></div>
         </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -25,7 +30,7 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="{{ url_for('static', filename='d3RangeSlider.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='d3-tip.js') }}"></script>
     <script>
         var mapVizUrl = "{{ url_for('getMap') }}";
         var barChartUrl = "{{ url_for('getBars') }}";

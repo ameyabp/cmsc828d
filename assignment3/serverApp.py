@@ -32,7 +32,7 @@ def getBars():
         newRange = json.loads(request.data)
         stateFips = newRange["stateFips"]
         #print("range received:", beginYear, endYear)
-        cursor.execute(f"select year, count(*) as value from storms where state=\'{state}\' group by year;")
+        cursor.execute(f"select year, count(*) as value from storms where statefips=\'{stateFips}\' group by year;")
         #cursor.execute(f"select state, count(*) as value from storms where year between {beginYear} and {endYear} group by state order by value desc;")
         # state like \'%Y%\' and 
         barData = json.dumps(cursor.fetchall())

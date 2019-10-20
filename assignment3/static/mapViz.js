@@ -1,10 +1,14 @@
 var formatAsInteger = d3.format(",");
 
 var margin = {top: 20, right: 5, bottom: 20, left: 50};
-var width = 960;
-var height = 600;
+//var width = 960;
+//var height = 600;
 var path = d3.geoPath();
-var svgMap = d3.select("svg#map")
+var svgMap = d3.select("svg#map");
+// Append Div for tooltip to BODY and not to SVG!!!
+var tt = d3.select("body").append("div")   
+                .attr("class", "tooltip")               
+                .style("opacity", 0);
 var colorScaleInstances;
 
 var colorScaleInjuries = d3.scaleSequential()
@@ -78,6 +82,18 @@ function updateD3Map(data) {
         d3.select(this)
           .transition().duration(200)
           .style("fill", "red");
+        tt.transition()        
+           .duration(200)      
+           .style("opacity", .9);   
+
+        tt.text(stateFips2Names[parseInt(d.id)])
+           .style("left", (d3.event.pageX) + "px")     
+           .style("top", (d3.event.pageY - 28) + "px"); 
+     })
+     .on("mousemove", function(d) {
+        tt.text(stateFips2Names[parseInt(d.id)])
+           .style("left", (d3.event.pageX) + "px")     
+           .style("top", (d3.event.pageY - 28) + "px");  
      })
      .on("mouseout", function() {
         d3.select(this)
@@ -85,6 +101,9 @@ function updateD3Map(data) {
           .style("fill", function(d) {
             return colorScaleInstances(dataDict[d.id]);
           });
+        tt.transition()        
+           .duration(500)      
+           .style("opacity", 0); 
      });
      
      //.append("title")
@@ -94,78 +113,4 @@ function updateD3Map(data) {
     .attr("class","state-borders")
     .attr("d",path(geoObj));
 
-}
-
-/*
-    var arc = d3.arc()
-                .outerRadius(outerRadius)
-                .innerRadius(0);
-
-    // -- for animation --
-    var arcFinal = d3.arc()
-                     .innerRadius(innerRadiusFinal)
-                     .outerRadius(outerRadius);
-
-    var arcFinal2 = d3.arc()
-                      .innerRadius(innerRadiusFinal2)
-                      .outerRadius(outerRadius);
-    // -------------------
-
-    var pie = d3.pie()
-                .value(function(d) {return d.count;});
-
-    var arcs = viz.selectAll("g.slice")
-                  .data(pie)
-                  .enter()
-                  .append("svg:g")
-                  .attr("class", "slice")
-                  .on("mouseover", mouseover)
-                  .on("mouseout", mouseout)
-                  .on("click", up);
-
-    arcs.append("svg:path")
-        .attr("fill", function(d, i) {return color(i);})
-        .attr("d", arc)
-        .append("svg:title")
-        .text(function(d) {return d.state + ": " + formatAsInteger(d.count)});
-
-    d3.selectAll("g.slice")
-      .selectAll("path")
-      .transition()
-      .duration(750)
-      .delay(10)
-      .attr("d", arcFinal)
-
-    // add label to the larger arcs, translated to the arc centroid and rotated
-    arcs.filter(function(d) {return d.endAngle - d.startAngle > 0.2;})
-        .append("svg:text")
-        .attr("dy", "0.35em")
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {return "translate(" + arcFinal.centroid(d) + ")";})
-        .text(function(d) {return d.state;});
-
-    // pie chart title
-    viz.append("svg:text")
-       .attr("dy", "0.35em")
-       .attr("text-anchor", "middle")
-       .text("Storm instances in states")
-       .attr("class", "title");
-}
-*/
-
-
-function mouseover() {
-    d3.select(this).select("path").transition()
-      .duration(750)
-      .attr("d", arcFinal2);
-}
-
-function mouseout() {
-    d3.select(this).select("path").transition()
-      .duration(750)
-      .attr("d", arcFinal);
-}
-
-function up(d,i) {
-    updateBarChart(d.state, color(i), data)
 }
