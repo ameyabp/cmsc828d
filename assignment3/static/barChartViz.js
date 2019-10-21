@@ -1,22 +1,24 @@
-var group = "All";
+var margin = {top: 30, right: 50, bottom: 20, left: 200};
+var width = Math.round(Number(d3.select("#barChart").style('width').slice(0, -2))) - margin.left - margin.right;
+var height = Math.round(Number(d3.select("#barChart").style('height').slice(0, -2))) - margin.top - margin.bottom;
+var barPadding = 1;
+var misc = {yLabel: 7, xLabelH: 15, title: 11};
+var color = {"instances":"#3D476A", "injuries":"#7B7D41", "deaths":"#87435A"};
 
-function initD3Bars(data, stateFips) {
-    //var basics = d3BarChartBase();
-    var margin = {top: 30, right: 5, bottom: 20, left: 50};
-    var width = Math.round(Number(d3.select("#barChart").style('width').slice(0, -2))) - margin.left - margin.right;
-    var height = Math.round(Number(d3.select("#barChart").style('height').slice(0, -2))) - margin.top - margin.bottom;
-    var colorBar = d3.scaleOrdinal(d3.schemeCategory10);
-    var barPadding = 1;
-    var misc = {yLabel: 7, xLabelH: 5, title: 11};
+function initD3Bars(data, stateFips, radioChoice, start, end) {
+    if (data.length == 0) {
+      //console.log(data);
+      return;
+    }
 
-    var xScale = d3.scaleBand()
-            .domain(data.map(d=> d.year))
-            .range([0, width])
+    var yScale = d3.scaleBand()
+            .domain(data.map(d=> d.eventtype))
+            .range([0, height])
             .paddingInner(0.1);
 
-    var yScale = d3.scaleLinear()
+    var xScale = d3.scaleLinear()
                    .domain([0, d3.max(data, function(d) {return d.value;})])
-                   .range([height, 0]);
+                   .range([0, width]);
 
     // remove old svg element
     d3.select("#barChart").select("svg").remove();
@@ -33,7 +35,7 @@ function initD3Bars(data, stateFips) {
        .attr("y", misc.title)
        .attr("class", "title")
        .attr("text-anchor", "middle")
-       .text("Number of instances per year for " + stateFips2Names[parseInt(stateFips)]);
+       .text("Number of " + radioChoice + " per event in " + stateFips2Names[parseInt(stateFips)] + " from " + start + " to " + end);
 
     var plot = svg.append("g")
                   .attr("transform", "translate(" + margin.left + "," + (margin.top + misc.yLabel) + ")");
@@ -42,52 +44,70 @@ function initD3Bars(data, stateFips) {
         .data(data)
         .enter()
         .append("rect")
-        .attr("x", function(d) {return xScale(d.year);})
-        .attr("width", xScale.bandwidth())
-        .attr("y", function(d) {return yScale(d.value);})
-        .attr("height", function(d) {return height-yScale(d.value);})
-        .attr("fill", "#123456");
+        .attr("x", 0)
+        .attr("width", function(d) {return xScale(d.value);})
+        .attr("y", function(d) {return yScale(d.eventtype);})
+        .attr("height", yScale.bandwidth())
+        .attr("fill", color[radioChoice]);
 
-    plot.selectAll("text")
+    // value labels
+    plot.selectAll("valuetext")
         .data(data)
         .enter()
         .append("text")
         .text(function(d) {return d.value;})
         .attr("text-anchor", "middle")
-        .attr("x", function(d,i) {return (i*(width/data.length) + ((width/data.length - barPadding)/2));})
-        .attr("y", function(d) {return (yScale(d.value) - misc.yLabel);})
-        .attr("class", "yAxis");
+        .attr("x", function(d) {return xScale(d.value) + misc.xLabelH;})
+        .attr("y", function(d, i) {return yScale(d.eventtype) + 0.2 * i + yScale.bandwidth()/2;});
 
-    // add xlabels to chart
-    var xLabels = svg.append("g")
-                     .attr("transform", "translate(" + margin.left + "," + (margin.top + height + misc.xLabelH) + ")");
-
-    xLabels.selectAll("text.xAxis")
-           .data(data)
-           .enter()
-           .append("text")
-           .text(function(d) {return d.year;})
-           .attr("text-anchor", "middle")
-           .attr("x", function(d,i) {return (i * (width/data.length) + ((width/data.length - barPadding)/2));})
-           .attr("y", 15)
-           .attr("class", "xAxis")
-           .selectAll("text")
-           .attr("transform", "rotate(-90)");
+    // add y labels to chart - event type
+    plot.selectAll("eventtext")
+        .data(data)
+        .enter()
+        .append("text")
+        .text(function(d) {return d.eventtype;})
+        .attr("text-anchor", "end")
+        .attr("x", function(d) {return -misc.xLabelH;})
+        .attr("y", function(d, i) {return yScale(d.eventtype) + 0.2 * i + yScale.bandwidth()/2;});
 }
 
 function updateD3Bars(d, i) {
-  console.log("update bars for state with fips", d.id);
+  stateFipGlobal = d.id;
+  console.log("update bars for state with fips", stateFipGlobal);
       d3.json("/getBars", {
         method: "POST",
         body: JSON.stringify({
-            stateFips: d.id
+            stateFips: stateFipGlobal,
+            radio: radioChoice,
+            start: rangeBegin,
+            end: rangeEnd
         }),
         headers: {
             "Content-type": "application/json; charset=UTF-8"
         }
     })
       .then(function(data) {
-        console.log(data);
-        initD3Bars(data, d.id);
+        //console.log(data);
+        initD3Bars(data, stateFipGlobal, radioChoice, rangeBegin, rangeEnd);
+      });
+}
+
+function updateD3BarsRadioSlider() {
+  console.log("update bars for state with fips", stateFipGlobal);
+      d3.json("/getBars", {
+        method: "POST",
+        body: JSON.stringify({
+            stateFips: stateFipGlobal,
+            radio: radioChoice,
+            start: rangeBegin,
+            end: rangeEnd
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+      .then(function(data) {
+        //console.log(data);
+        initD3Bars(data, stateFipGlobal, radioChoice, rangeBegin, rangeEnd);
       });
 }

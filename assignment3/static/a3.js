@@ -116,17 +116,44 @@ stateFips2Names = {
     99: "Puerto Rico"
 }
 
+// render the time slider and init time variables
+var rangeBegin = 1990;
+var rangeEnd = 2000;
+var stateFipGlobal = "1";
+
+var slider = createD3RangeSlider(1950, 2019, "#slider");
+slider.range(rangeBegin, rangeEnd);
+d3.select("#slider-text").text(rangeBegin + " - " + rangeEnd);
+slider.onChange(function(newRange) {
+    if (newRange.begin != rangeBegin || newRange.end != rangeEnd) {
+        //console.log(newRange);
+        d3.select("#slider-text").text(newRange.begin + " - " + newRange.end);
+        rangeBegin = newRange.begin
+        rangeEnd = newRange.end
+        updateMap(rangeBegin, rangeEnd);
+        //updateD3BarsRadioSlider()
+    }
+});
+
+// init radio choice variables
+var radioChoice = d3.select('input[name="dependentVariable"]:checked').node().value;
+//console.log("init radio value: " + radioChoice);
+d3.selectAll(".checkbox")
+  .on("change", function() {
+        radioChoice = d3.select('input[name="dependentVariable"]:checked').node().value;
+        updateD3BarsRadioSlider();
+});
 
 // init visualizations
-initMap(1990, 1995);
-//initBarChart('ALASKA');
+initMap();
+initBarChart();
 
-function initMap(beginYear, endYear) {
+function initMap() {
     d3.json("/getMap", {
         method: "POST",
         body: JSON.stringify({
-            start: beginYear,
-            end: endYear
+            start: rangeBegin,
+            end: rangeEnd
         }),
         headers: {
             "Content-type": "application/json; charset=UTF-8"
@@ -138,19 +165,22 @@ function initMap(beginYear, endYear) {
     });
 }
 
-function initBarChart(state) {
+function initBarChart() {
     d3.json("/getBars", {
         method: "POST",
         body: JSON.stringify({
-            place: state
+            stateFips: stateFipGlobal,
+            radio: radioChoice,
+            start: rangeBegin,
+            end: rangeEnd
         }),
         headers: {
             "Content-type": "application/json; charset=UTF-8"
         }
     })
       .then(function(data) {
-        console.log(data);
-        initD3Bars(data);
+        //console.log(data);
+        initD3Bars(data, stateFipGlobal, radioChoice, rangeBegin, rangeEnd);
       });
 }
 
@@ -170,43 +200,3 @@ function updateMap(beginYear, endYear) {
         updateD3Map(data);
     });
 }
-
-function updateBarChart(state) {
-    d3.json("/getBars", {
-        method: "POST",
-        body: JSON.stringify({
-            place: state
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    })
-      .then(function(data) {
-        console.log(data);
-        updateD3Bars(data);
-      });
-}
-
-// render the time slider
-var rangeBegin = 0;
-var rangeEnd = 0;
-var slider = createD3RangeSlider(1950, 2019, "#slider");
-slider.range(1990, 1995);
-d3.select("#slider-text").text(1990 + " - " + 1995);
-slider.onChange(function(newRange) {
-    if (newRange.begin != rangeBegin || newRange.end != rangeEnd) {
-        //console.log(newRange);
-        d3.select("#slider-text").text(newRange.begin + " - " + newRange.end);
-        rangeBegin = newRange.begin
-        rangeEnd = newRange.end
-        updateMap(rangeBegin, rangeEnd);
-    }
-});
-
-var radioChoice = d3.select('input[name="dependentVariable"]:checked').node().value;
-console.log("init radio value: " + radioChoice);
-d3.selectAll(".checkbox")
-  .on("change", function() {
-        radioChoice = d3.select('input[name="dependentVariable"]:checked').node().value;
-        console.log(radioChoice + " selected");
-});

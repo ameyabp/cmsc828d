@@ -1,23 +1,15 @@
 var formatAsInteger = d3.format(",");
 
-var margin = {top: 20, right: 5, bottom: 20, left: 50};
-//var width = 960;
-//var height = 600;
+//var margin = {top: 20, right: 5, bottom: 20, left: 50};
 var path = d3.geoPath();
 var svgMap = d3.select("svg#map");
+var width = Math.round(Number(d3.select("svg#map").style('width').slice(0, -2)));
 // Append Div for tooltip to BODY and not to SVG!!!
 var tt = d3.select("body").append("div")   
-                .attr("class", "tooltip")               
+                .attr("class", "tooltip")           
                 .style("opacity", 0);
 var colorScaleInstances;
-
-var colorScaleInjuries = d3.scaleSequential()
-                            .domain([0, 22879])
-                            .interpolator(d3.interpolateBlues);
-
-var colorScaleDeaths = d3.scaleSequential()
-                            .domain([0, 1908])
-                            .interpolator(d3.interpolateBlues);
+var legend;
 
 var geoMeshFilter;
 var geoObj;
@@ -35,21 +27,16 @@ function initD3Map(data) {
 
         dataDict = data.reduce((a, d) => {a[d.statefips] = d.value; return a;}, {});
 
-        colorScaleInstances = d3.scaleSequential()
-                            .domain([
-                                d3.min(data.map(d => d.value)),
-                                d3.max(data.map(d => d.value))
-                              ])
-                            .interpolator(d3.interpolateBlues);
-
         updateD3Map(data);
       });
 }
 
 function updateD3Map(data) {
     //console.log("updating map");
-    if (data.length == 0)
+    if (data.length == 0) {
+      //console.log(data);
       return;
+    }
 
     dataDict = data.reduce((a, d) => {a[d.statefips] = d.value; return a;}, {});
 
@@ -58,19 +45,31 @@ function updateD3Map(data) {
                         d3.min(data.map(d => d.value)),
                         d3.max(data.map(d => d.value))
                       ])
-                    .interpolator(d3.interpolateBlues);
-    
+                    .interpolator(d3.interpolateGreys);
+
     // remove old colors
     svgMap.selectAll("path").remove();
+    svgMap.selectAll("g").remove();
+
+    legend = d3.legendColor()
+               .scale(colorScaleInstances)
+               .orient("horizontal")
+               .shapeWidth(60)
+               .title("Number of instances");
+
+    svgMap.append("g")
+          .attr("transform", "translate(" + 3*width/4 + ", " + "20)")
+          .call(legend)
+
 
     svgMap.selectAll("path").data(geoFeatures)
      .enter().append("path")
      //.attr("class", "us-states")
      .attr("d", path)
      .attr("fill", d => {
-        if (d.id in dataDict) {
+        if (parseInt(d.id) in dataDict) {
           //console.log("present:", d.id);
-          return colorScaleInstances(dataDict[d.id]);
+          return colorScaleInstances(dataDict[parseInt(d.id)]);
         }
         else {
           //console.log("mising:", d.id);
@@ -86,14 +85,14 @@ function updateD3Map(data) {
            .duration(200)      
            .style("opacity", .9);   
 
-        tt.text(stateFips2Names[parseInt(d.id)])
-           .style("left", (d3.event.pageX) + "px")     
-           .style("top", (d3.event.pageY - 28) + "px"); 
+        tt.html(stateFips2Names[parseInt(d.id)] + "<br />" + dataDict[parseInt(d.id)] + " instances" +  "<br />" + "<br />" + "Click to view breakdown")
+           .style("left", (d3.event.pageX + 10) + "px")     
+           .style("top", (d3.event.pageY + 10) + "px"); 
      })
      .on("mousemove", function(d) {
-        tt.text(stateFips2Names[parseInt(d.id)])
-           .style("left", (d3.event.pageX) + "px")     
-           .style("top", (d3.event.pageY - 28) + "px");  
+        tt.html(stateFips2Names[parseInt(d.id)] + "<br />" + dataDict[parseInt(d.id)] + " instances" + "<br />" + "<br />" + "Click to view breakdown")
+           .style("left", (d3.event.pageX + 10) + "px")     
+           .style("top", (d3.event.pageY + 10) + "px");  
      })
      .on("mouseout", function() {
         d3.select(this)

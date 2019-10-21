@@ -13,7 +13,7 @@
   </head>
 
   <body>
-        <h1> Storms visualization </h1>
+        <h1> Natural Calamities </h1>
         <div class="container-fluid">
             <svg id="map" width="960" height="600"></svg>
             <div id="slider"></div>
@@ -29,8 +29,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js" integrity="sha256-Bsj9aso0jyDIJBXgbh/g/fbzMHA9cOBX4sd9CeUSUE4=" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='d3RangeSlider.js') }}"></script>
-    <script src="{{ url_for('static', filename='d3-tip.js') }}"></script>
     <script>
         var mapVizUrl = "{{ url_for('getMap') }}";
         var barChartUrl = "{{ url_for('getBars') }}";
