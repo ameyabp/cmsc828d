@@ -2,8 +2,8 @@ var formatAsInteger = d3.format(",");
 
 //var margin = {top: 20, right: 5, bottom: 20, left: 50};
 var path = d3.geoPath();
-var svgMap = d3.select("svg#map");
-var width = Math.round(Number(d3.select("svg#map").style('width').slice(0, -2)));
+var svgMap = d3.select("#map").append("svg");
+var width = Math.round(Number(d3.select("#map").style('width').slice(0, -2)));
 // Append Div for tooltip to BODY and not to SVG!!!
 var tt = d3.select("body").append("div")   
                 .attr("class", "tooltip")           
@@ -85,14 +85,28 @@ function updateD3Map(data) {
            .duration(200)      
            .style("opacity", .9);   
 
-        tt.html(stateFips2Names[parseInt(d.id)] + "<br />" + dataDict[parseInt(d.id)] + " instances" +  "<br />" + "<br />" + "Click to view breakdown")
+        if (parseInt(d.id) in dataDict) {
+          tt.html(stateFips2Names[parseInt(d.id)] + "<br />" + dataDict[parseInt(d.id)] + " instances" +  "<br />" + "<br />" + "Click to view breakdown")
            .style("left", (d3.event.pageX + 10) + "px")     
            .style("top", (d3.event.pageY + 10) + "px"); 
+        }
+        else {
+          tt.html(stateFips2Names[parseInt(d.id)] + "<br />" + "No instances")
+           .style("left", (d3.event.pageX + 10) + "px")     
+           .style("top", (d3.event.pageY + 10) + "px"); 
+        }
      })
      .on("mousemove", function(d) {
-        tt.html(stateFips2Names[parseInt(d.id)] + "<br />" + dataDict[parseInt(d.id)] + " instances" + "<br />" + "<br />" + "Click to view breakdown")
+        if (parseInt(d.id) in dataDict) {
+          tt.html(stateFips2Names[parseInt(d.id)] + "<br />" + dataDict[parseInt(d.id)] + " instances" +  "<br />" + "<br />" + "Click to view breakdown")
            .style("left", (d3.event.pageX + 10) + "px")     
-           .style("top", (d3.event.pageY + 10) + "px");  
+           .style("top", (d3.event.pageY + 10) + "px"); 
+        }
+        else {
+          tt.html(stateFips2Names[parseInt(d.id)] + "<br />" + "No instances")
+           .style("left", (d3.event.pageX + 10) + "px")     
+           .style("top", (d3.event.pageY + 10) + "px"); 
+        }
      })
      .on("mouseout", function() {
         d3.select(this)
