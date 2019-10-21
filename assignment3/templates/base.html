@@ -5,8 +5,6 @@
     <title>CMSC828D-A3</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='d3RangeSlider.css') }}" type="text/css" />
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
@@ -14,10 +12,55 @@
 
   <body>
         <h1> Natural Calamities </h1>
+        <div class="writeup">
+            <h2> Dataset </h2>
+            <p>
+                The dataset includes details about natural calamities that occurred in the United States from 1950 upto current time. This dataset was curated by National Oceanic and Atmospheric Administration and is available <a href=" https://www1.ncdc.noaa.gov/pub/data/swdi/stormevents/csvfiles/">here</a>. It has around 20 distinct attributes which includes attributes like the type of event that occurred, location of occurrence - state and county along with lat-lng, time of occurrence, injuries or fatalities caused by the incident and some more nominal data like news headlines in which the incident was featured. The number of records in the dataset is ~1,500,000. The dataset is split into 70 csv files which were merged together into one 'compositeStorms.csv' file
+            </p>
+            <h2> Visualization design </h2>
+            <p>
+                I wanted to work with maps which narrowed down my search for datasets to geographical datasets. With this natural calamities dataset, I was able to satisfy both the number of records requirement and the map requirement so I went ahead with this. Creating a map visualization which shows how many incidents had occurred in every place and in every county was the clear way forward. This kind of visualization would help the user to understand which regions of the country experience more incidents, something which a simple bar chart or pie chart would not have been able to convey effectively. Natural calamities have more to do with the geographical locations of places and not just names and numbers. Some of the records had the county names/fips garbled while some other records simply had no lat-lng information. Dropping these rows was significantly reducing the dataset size and hence I was restricted to visualize only the state level instance count and could not implement the county level breakdown. One conscious design choice that was made here was to use d3.interpolateGreys for the color scale since it is known that differences in black/white or the value component of HSV are better perceived than those in color scales.
+            <br>
+            <br>
+                My initial plan was to provide a radio checkbox for the user to select what kind of events to see - tornadoes, avalances, thunder storms, etc. However as I scanned through the dataset, I realised that there were around 20 to 30 different types of incidents recorded which made the checkbox widget unfavorable. This led me to keep this breakdown of incidents by type for a detail-on-demand kind of interaction and show only the aggregate incident count on the main map visualization. Since the data for time of occurrence of the events was also available, a time slider was also a natural choice. Instead of using a single time slider, I opted for a time range slider so that it would be possible to view the details of incidents over a time range and not just in a single year or so. The time range slider was linked with the map visualization to dynamically update it. Tooltip was also used on the map to help the user identify which state the user is looking at and what is the value that the map is visualizing. Without assuming any intuitiveness of my interface, a pointer was also provided on the tooltip as to what to do next to see more details.
+            <br>
+            <br>
+                The Details panel shows the breakdown of the incidents as per the type of incident, for the chosen state and for the chosen time range. Additionally, radio checkboxes were also provided to get an idea of the damage caused by different kinds of incidents. One design choice was made here to not sort the fetched values by the value, but to sort it by the event name. The idea was that this would help the user to scan through the incidents and the damage it caused in a flow, without having to search the event name again on toggling between 'Instances', 'Injuries' and 'Deaths'. The initial plan was to also link the time range slider with the details panel for dynamic update, but that was putting a lot of load on the database causing visible lag. This plan was thus dropped and instead to refresh the details panel, the user would need to click on a state or toggle between 'Instances', 'Injuries' and 'Deaths'.
+            <br>
+            <br>
+                I fell short on time in trying to format the page to my liking. For example, I wanted to dynamically match the size of the bars in the Details panel, position the slider range text appropriately so that the user can see better and increase the size of the radio boxes for better visibility.
+            <br>
+            <br>
+                The time range slider uses the 'brush' or 'filter' paradigm, the tooltip and click for details uses the 'details-on-demand' paradigm. The radio checkboxes use the 'change data view' paradigm of interactive visualizations.
+            </p>
+            <h2>Backend design</h2>
+            <p>
+                Postgresql was used as recommended for the backend. Web server was implemented using python flask library and the connection between web server and the database was implemented using the psycopg2 library. For the communication between the web pages and the server, d3.json() was used as it encapsulates the javascript fetch API within itself. Also, multiple connections were opened from the web server to the database owing to some issues of data corruption during runtime.
+            </p>
+            <h2>How to use</h2>
+            <p>
+                1. The default view of the map is set to show the instance count for the time range - 1990 to 2000. Both ends of the slider can be moved, or the entire slider can be moved to change the time range<br>
+                2. Hover over a state of interest to see the instance count and click on it to see breakdown and more details in the Details panel<br>
+                3. In the details panel, toggle between 'Instances', 'Injuries' and 'Deaths' to see the requried information
+            </p>
+        </div>
         <div class="panel">
+            <h2>Map Visualization - Number of instances</h2>
             <div id="map"></div>
-            <div id="slider"></div>
+
+            <table class="slid">
+              <col width="2%">
+              <col width="96%">
+              <col width="2%">
+              <tr>
+                <td>1950</td>
+                <td><div id="slider"></div></td>
+                <td>2019</td>
+              </tr>
+            </table>
             <div id="slider-text"></div>
+
+            <h2>Details panel</h2>
             <div id="radioBox">
                 <input type="radio" name="dependentVariable" id="instances" value="instances" class="checkbox" checked>Instances</input>
                 <input type="radio" name="dependentVariable" id="injuries" value="injuries" class="checkbox" >Injuries</input>
@@ -25,16 +68,21 @@
             </div>
             <div id="barChart"></div>
         </div>
+        <div class="writeup">
+            <h2>Development Process</h2>
+            <p>
+                The initial search for dataset was spanned across 2 days to ensure both the number of records requirement and basic data quality at the least. However it turned out data quality check was an iterative process in my case. I was formulating questions to answer and interactions to support based on the data that I had and when I came up with some interaction, I had to go back to the dataset again to see if the dataset has any holes in it which prevent me from implementing those interactions. This was how I had to drop the plan of visualizing county level incident count. The bad records were hidden in different files and were difficult to identify without printing them out. Pandas library was used for data wrangling and this entire process of planning what interactions to implement and data wrangling was spanned over 3-4 days for a total of ~8 hrs.
+            <br>
+            <br>
+                The final implementation part was the most challenging as I did not have much hands on experience with d3 before this. Python server, html, css and javasript were manageable but d3 almost killed me :P. I spent 3 entire days in implementing the interactions end to end. I also took around 2 additional days to setup the web server and database and wire them up end to end so that I could work on visualizing things. Figuring out how to pass the interaction events to the python web server was especially a tricky part because arguments also had to be passed to the server. Overall, the actual implementation part took me around 60 hrs over the 5 days.
+            </p>
+        </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js" integrity="sha256-Bsj9aso0jyDIJBXgbh/g/fbzMHA9cOBX4sd9CeUSUE4=" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='d3RangeSlider.js') }}"></script>
-    <script>
-        var mapVizUrl = "{{ url_for('getMap') }}";
-        var barChartUrl = "{{ url_for('getBars') }}";
-    </script>
     <script src="{{ url_for('static', filename='mapViz.js') }}"></script>
     <script src="{{ url_for('static', filename='barChartViz.js') }}"></script>
     <script src="{{ url_for('static', filename='updateViz.js') }}"></script>

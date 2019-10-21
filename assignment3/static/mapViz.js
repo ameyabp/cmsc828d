@@ -1,14 +1,13 @@
-var formatAsInteger = d3.format(",");
-
-//var margin = {top: 20, right: 5, bottom: 20, left: 50};
 var path = d3.geoPath();
 var width = Math.round(Number(d3.select("#map").style('width').slice(0, -2)));
 var height = Math.round(Number(d3.select("#map").style('height').slice(0, -2)));
 var svgMap = d3.select("#map").append("svg").attr("width", width).attr("height", height);
+
 // Append Div for tooltip to BODY and not to SVG!!!
 var tt = d3.select("body").append("div")   
                 .attr("class", "tooltip")           
                 .style("opacity", 0);
+
 var colorScaleInstances;
 var legend;
 
@@ -66,7 +65,6 @@ function updateD3Map(data) {
 
     svgMap.selectAll("path").data(geoFeatures)
      .enter().append("path")
-     //.attr("class", "us-states")
      .attr("d", path)
      .attr("fill", d => {
         if (parseInt(d.id) in dataDict) {
@@ -120,9 +118,6 @@ function updateD3Map(data) {
            .duration(500)      
            .style("opacity", 0); 
      });
-     
-     //.append("title")
-     //.text("Map visualization");
 
   svgMap.append("path")
     .attr("class","state-borders")

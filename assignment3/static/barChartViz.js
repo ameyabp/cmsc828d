@@ -2,7 +2,7 @@ var margin = {top: 30, right: 50, bottom: 20, left: 200};
 var width = Math.round(Number(d3.select("#barChart").style('width').slice(0, -2))) - margin.left - margin.right;
 var height = Math.round(Number(d3.select("#barChart").style('height').slice(0, -2))) - margin.top - margin.bottom;
 var barPadding = 1;
-var misc = {yLabel: 7, xLabelH: 15, title: 11};
+var misc = {yLabel: 7, xLabelH: 15, title: 20};
 var color = {"instances":"#3D476A", "injuries":"#7B7D41", "deaths":"#87435A"};
 
 function initD3Bars(data, stateFips, radioChoice, start, end) {

@@ -1,50 +1,3 @@
-/*var tuples = [{"czmtype":"C","count":"1039183"},{"czmtype":"M","count":"7513"},{"czmtype":"Z","count":"516660"}];
-
-console.log(tuples);
-
-var xBand = d3.scaleBand()
-            .domain(tuples.map(d=> d.czmtype))
-            .range([100, 750])
-            .paddingInner(0.1);
-
-var hScale = d3.scaleLinear()
-            .domain([0, Math.max(...tuples.map(d=>parseInt(d.count)))])
-            //.domain([0, 1100000])
-            .range([550,50]);
-
-d3.select("#viz").selectAll("rect")
-        .data(tuples)
-        .enter()
-        .append("rect")
-        .attr("width", xBand.bandwidth())
-        .attr("height", d => 550-hScale(parseInt(d.count)))
-        .attr("x", d => xBand(d.czmtype) + "px")
-        .attr("y", d=>hScale(parseInt(d.count)) + "px")
-        .attr("fill", "blue");
-
-// only applies to the axes!!!!
-d3.select("#viz").append("g")
-                .attr("transform", "translate(0, 550)")
-                .call(d3.axisBottom(xBand))
-
-d3.select("#viz").append("g")
-                .attr("transform", "translate(100,0)")
-                .call(d3.axisLeft(hScale));
-                */
-
-/*
-
-queue()
-    .defer(d3.json, mapVizUrl)
-    .defer(d3.json, barChartUrl)
-    .await(ready);
-    
-function ready(error, dataset) {
-    d3MapViz(dataset);
-    d3BarChart(dataset);
-}
-*/
-
 stateFips2Names = {
      1: "Alabama",
      2: "Alaska",
@@ -137,7 +90,6 @@ slider.onChange(function(newRange) {
 
 // init radio choice variables
 var radioChoice = d3.select('input[name="dependentVariable"]:checked').node().value;
-//console.log("init radio value: " + radioChoice);
 d3.selectAll(".checkbox")
   .on("change", function() {
         radioChoice = d3.select('input[name="dependentVariable"]:checked').node().value;

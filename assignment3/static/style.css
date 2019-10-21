@@ -2,6 +2,12 @@ h1 {
   text-align: center;
 }
 
+.writeup {
+  margin: auto;
+  position: relative;
+  width: 90%;
+}
+
 .panel {
   text-align: center;
 }
@@ -15,6 +21,8 @@ h1 {
     height: 600px;
     display: inline-block;
     font-size: 12px;
+    margin-bottom: 20px;
+    background-color: #d6ffff;
 }
 
 
@@ -26,24 +34,42 @@ h1 {
     height: 600px;
     display: inline-block;
     font-size: 12px;
+    margin-top: 20px;
 }
 
-#map .title, #barChart .title{
+#map .title{
     font-weight: bold;
 }
 
+#barChart .title {
+  font-size: 20px;
+}
 
-#slider {
+input[type="radio"]{
+  margin: 0 20px 0 20px;
+}
+
+#radioBox.checkbox {
+  font-size: 30px;
+}
+
+.slid {
+  width: 80%;
+  display: inline-block;
+}
+
+#slider{
     margin: auto;
    position: relative;
    height:30px;
    background-color: #eeeef5;
-   width:80%;
+   width:100%;
 }
 
 #slider-text {
     margin: auto;
     position: relative;
+    margin-bottom: 20px;
 }
 
 .states :hover {
