@@ -5,7 +5,6 @@ CREATE TABLE Storms(
 	stateFips	int,
 	czmType	char(1),
 	countyFips	int,
---	countyName	varchar(100),
 	lat	float,
 	lng	float,
 	beginDate	char(10),
