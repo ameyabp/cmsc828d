@@ -72,6 +72,10 @@ function initD3Bars(data, stateFips, radioChoice, start, end) {
 }
 
 function updateD3Bars(d, i) {
+  if (bLog) {
+    loggerDate = new Date();
+    logs.push("mapClick_" + loggerDate.getTime() + "\n");
+  }
   stateFipGlobal = d.id;
   //console.log("update bars for state with fips", stateFipGlobal);
       d3.json("/getBars", {

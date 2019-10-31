@@ -136,6 +136,7 @@ var stateFipGlobal = "1";
 var logs = [];
 var loggerDate;
 var bLog = false;
+document.getElementById("stop").disabled=true;
 
 var sliderTimeLog = 0;
 var slider = createD3RangeSlider(1950, 2019, "#slider");
@@ -232,6 +233,8 @@ function updateMap(beginYear, endYear) {
 
 function startLogging() {
     //console.log("Start clicked")
+    document.getElementById("start").disabled=true;
+    document.getElementById("stop").disabled=false;
     bLog = true;
     loggerDate = new Date();
     logs.push("start_" + loggerDate.getTime() + "\n");
@@ -239,6 +242,8 @@ function startLogging() {
 
 function stopLogging() {
     //console.log("Stop clicked")
+    document.getElementById("start").disabled=false;
+    document.getElementById("stop").disabled=true;
     bLog = false;
     loggerDate = new Date();
     logs.push("stop_" + loggerDate.getTime());

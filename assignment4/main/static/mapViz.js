@@ -45,6 +45,8 @@ function initD3Map(data) {
       });
 }
 
+var hoverTime = 0;
+
 function updateD3Map(data) {
     //console.log("updating map");
     if (data.length == 0) {
@@ -115,7 +117,10 @@ function updateD3Map(data) {
 
         if (bLog) {
           loggerDate = new Date();
-          logs.push("hover_" + loggerDate.getTime() + "\n");
+          if (loggerDate.getTime() - hoverTime >= 1000) {
+            logs.push("hover_" + loggerDate.getTime() + "\n");
+            hoverTime = loggerDate.getTime();
+          }
         }
      })
      .on("mousemove", function(d) {
@@ -158,7 +163,7 @@ function dropdownChange() {
 
     if (bLog) {
       loggerDate = new Date();
-      logs.push("Dropdown used_" + loggerDate.getTime() + "\n");
+      logs.push("dropdown_" + loggerDate.getTime() + "\n");
     }
 
     // update the bar chart
