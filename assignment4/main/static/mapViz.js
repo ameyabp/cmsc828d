@@ -112,6 +112,11 @@ function updateD3Map(data) {
            .style("left", (d3.event.pageX + 10) + "px")     
            .style("top", (d3.event.pageY + 10) + "px"); 
         }
+
+        if (bLog) {
+          loggerDate = new Date();
+          logs.push("hover_" + loggerDate.getTime() + "\n");
+        }
      })
      .on("mousemove", function(d) {
         if (parseInt(d.id) in dataDict && dataDict[parseInt(d.id)] != 0) {
@@ -150,6 +155,11 @@ function dropdownChange() {
 
     // highlight the state for 2 seconds
     svgMap.select("#fip"+newFips).style("fill", "red").transition().duration(5000).style("fill", colorScaleInstances(dataDict[parseInt(newFips)]));
+
+    if (bLog) {
+      loggerDate = new Date();
+      logs.push("Dropdown used_" + loggerDate.getTime() + "\n");
+    }
 
     // update the bar chart
     updateD3BarsDropdown(newFips);

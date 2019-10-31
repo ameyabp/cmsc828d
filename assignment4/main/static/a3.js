@@ -132,6 +132,12 @@ var rangeBegin = 1990;
 var rangeEnd = 2000;
 var stateFipGlobal = "1";
 
+// logger stuff
+var logs = [];
+var loggerDate;
+var bLog = false;
+
+var sliderTimeLog = 0;
 var slider = createD3RangeSlider(1950, 2019, "#slider");
 slider.range(rangeBegin, rangeEnd);
 d3.select("#slider-text").text(rangeBegin + " - " + rangeEnd);
@@ -143,6 +149,12 @@ slider.onChange(function(newRange) {
         rangeEnd = newRange.end
         updateMap(rangeBegin, rangeEnd);
         //updateD3BarsRadioSlider()
+        if (bLog) {
+            loggerDate = new Date();
+            if (loggerDate.getTime() - sliderTimeLog >= 3000)
+                logs.push("slider_" + loggerDate.getTime() + "\n");
+            sliderTimeLog = loggerDate.getTime();
+        }
     }
 });
 
@@ -153,6 +165,10 @@ d3.selectAll(".checkbox")
         radioChoice = d3.select('input[name="dependentVariable"]:checked').node().value;
         updateMapRadio();
         updateD3BarsRadioSlider();
+        if (bLog) {
+            loggerDate = new Date();
+            logs.push("radio_" + loggerDate.getTime() + "\n");
+        }
 });
 
 // init visualizations
@@ -212,4 +228,22 @@ function updateMap(beginYear, endYear) {
         //console.log(data);
         updateD3Map(data);
     });
+}
+
+function startLogging() {
+    //console.log("Start clicked")
+    bLog = true;
+    loggerDate = new Date();
+    logs.push("start_" + loggerDate.getTime() + "\n");
+}
+
+function stopLogging() {
+    //console.log("Stop clicked")
+    bLog = false;
+    loggerDate = new Date();
+    logs.push("stop_" + loggerDate.getTime());
+    for (i=0;i<logs.length;i++) {
+       console.log(logs[i]);
+    }
+    logs.length = 0;
 }
