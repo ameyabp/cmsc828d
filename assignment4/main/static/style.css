@@ -1,0 +1,116 @@
+h1 {
+  text-align: center;
+}
+
+.writeup {
+  margin: auto;
+  position: relative;
+  width: 90%;
+}
+
+.panel {
+  text-align: center;
+}
+
+#map {
+    margin: auto;
+    position:relative;
+    top:40%;
+    left:10px;
+    width:80%;
+    height: 650px;
+    display: inline-block;
+    font-size: 12px;
+    margin-bottom: 20px;
+    background-color: #d6ffff;
+}
+
+
+#barChart {
+    margin: auto;
+    position:relative;
+    top:40%;
+    width: 80%;
+    height: 600px;
+    display: inline-block;
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+#map .title{
+    font-weight: bold;
+}
+
+#barChart .title {
+  font-size: 20px;
+}
+
+input[type="radio"]{
+  margin: 0 20px 0 20px;
+}
+
+#radioBox.checkbox {
+  font-size: 30px;
+}
+
+.slid {
+  width: 80%;
+  display: inline-block;
+}
+
+#slider{
+    margin: auto;
+   position: relative;
+   height:30px;
+   background-color: #eeeef5;
+   width:100%;
+}
+
+#slider-text {
+    margin: auto;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.states :hover {
+  fill: red;
+}
+
+.state-borders {
+  fill: none;
+  stroke: #000;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.us-states{
+    stroke: #999999;
+    stroke-width: 0.5;
+}
+
+.us-states:hover{
+    stroke: black;
+    stroke-width: 1.5;
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 120px;                  
+  height: 80px;                 
+  padding: 2px;             
+  font: 12px sans-serif;        
+  background: white;   
+  border: 0px;      
+  border-radius: 8px;           
+  pointer-events: none;         
+}
+
+select.dd {
+  width:20%;
+  height: 5%;
+  display: inline-block;
+  font-size: 12px;
+}
