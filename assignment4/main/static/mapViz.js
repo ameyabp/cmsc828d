@@ -66,6 +66,14 @@ function updateD3Map(data) {
     // remove old colors
     svgMap.selectAll("path").remove();
     svgMap.selectAll("g").remove();
+    svgMap.selectAll("text").remove();
+
+    svgMap.append("text")
+       .attr("x", (width+margin.left+margin.right)/2)
+       .attr("y", misc.title)
+       .attr("class", "title")
+       .attr("text-anchor", "middle")
+       .text("Number of " + radioChoice + " from " + rangeBegin + " to " + rangeEnd);
 
     legend = d3.legendColor()
                .scale(colorScaleInstances)
