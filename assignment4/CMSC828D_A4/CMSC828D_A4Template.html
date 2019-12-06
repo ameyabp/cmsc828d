@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!-- saved from url=(0070)https://courses.cs.washington.edu/courses/cse512/18sp/a2-template.html -->
+<html xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CMSC828D -- Assignment 4</title>
+  <style>
+		* { padding: 0; margin: 0; }
+
+		body {
+		  margin: 0 auto 0 auto;
+		  padding: 0;
+		  background-color: #800000;
+		  width: 840px;
+		  font-family: "Avenir", "Avenir Next", Helvetica Neue, Arial;
+		  font-size: 0.95em;
+		}
+
+		a, a:visited { text-decoration: none; color: #ff0000; }
+		a:hover { text-decoration: underline; color: #f4b014; }
+		img, a.img, a:hover.img { border: none; }
+
+		img {
+		  max-width: 800px;
+		}
+
+		h1, h2, h3, h4, h5 {
+		  color: #990000;
+		  background-color: inherit;
+		  font-weight: normal;
+		  padding: 0 0 5px 0;
+		  margin: 15px 0 0 0;
+		  border: none;
+		  clear: right;
+		}
+		h1 { font-size: 18pt; margin:  5px 0 10px 0; line-height: 28px; }
+		h2 { font-size: 14pt; margin: 30px 0 15px 0; letter-spacing: 0.01em; border-bottom: 1px solid #ccc;  line-height: 20px;}
+		h3 { font-size: 13pt; }
+		h4 { font-size: 12pt; }
+		h5 { font-size: 11pt; }
+		p { margin: 0 0 10px 0; }
+		hr { border: 0px; border-top: 1px solid #ccc; height: 0px; }
+		ol { margin: 1em; }
+
+		.content {
+		  margin: 0;
+		  padding: 15px 20px;
+		  background-color: #ffffff;
+		}
+
+		.article {
+		  line-height: 1.5em;
+		}
+
+		.entry  {
+		  border-top: 1px solid #ddd;
+		  padding-top: 2px;
+		  margin-top: 3em;
+		}
+  </style>
+</head>
+
+<body>
+<div class="content">
+
+<section>
+  <h1>Assignment 4: Evaluating Visualizations</h1>
+
+  <p>
+    <strong>Ameya Patil</strong> —
+    <em>ameyap@umd.edu</em>
+  </p>
+
+</section>
+
+<section>
+  <h2>Description of A3</h2>
+  <p>The visualization tool designed for A3 was a map based visualization for US natural calamities dataset. The dataset includes details about natural calamities that occurred in the United States from 1950 upto current time. This dataset was curated by National Oceanic and Atmospheric Administration and is available <a href=" https://www1.ncdc.noaa.gov/pub/data/swdi/stormevents/csvfiles/">here</a>. It has around 20 distinct attributes which includes attributes like the type of event that occurred, location of occurrence - state and county along with lat-lng, time of occurrence, injuries or fatalities caused by the incident and some more nominal data like news headlines in which the incident was featured. The number of records in the dataset is ~1,500,000.
+  	<br>
+  	<br>
+  	The visualization supports tooltips on the map, filtering operation to filter events with respect to time and details on demand by clicking on the map to see a per event breakdown of the value attributes available in the dataset.
+  </p>
+  <img src="./map.png">
+  <img src="./bars.png">
+	<h3>How to use</h3>
+	<p>
+	    1. The default view of the map is set to show the instance count for the time range - 1990 to 2000. Both ends of the time slider can be moved to change the window size, or the entire slider can be moved to change the time range<br>
+	    2. Hover over a state of interest to see the aggregate value OR use the dropdown to find a state, and then click on it to see breakdown and more details in the Details panel<br>
+	    3. In the details panel, toggle between 'Instances', 'Injuries' and 'Deaths' to see the requried information. This will also update the map to show the corresponding data
+	</p>
+</section>
+
+<section>
+  <h2>Research Questions</h2>
+  <ol>
+    <li>How effective is my tool for exploratory analysis of the dataset?</li>
+    <li>Do users prefer textual widgets over visual widgets in interaction tools?</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Data Collection</h2>
+  <p> The survey can be accessed <a href="https://umdsurvey.umd.edu/jfe/form/SV_0HyMX2Sb5ki7HBb">here</a>
+  <br>
+  <br>
+    My first research question was to evaluate whether my tool allowed users to explore the dataset and not just answer the objective questions that I was asking them. To this end, before starting the tasks, the users were first provided a verbal description of the dataset. Based on this description, they were asked to write down some keywords regarding what kind of features would they expect the visualization tool to have. This was aimed at understanding the users' viewpoint on what could be interesting to analyze in the chosen dataset. The users were then asked to solve 5 tasks, the first 3 of which were to help the users get accustomed to the tool while also trying to get them use all the different widgets available in the tool. The fourth task was an open-ended exploratory kind of task which was designed to encourage the users to explore the dataset. The last task was specifically aimed at priming the users towards noticing a particular limitation that I knew existed in the tool, I wanted to see if they did find the limitation annoying and thus worth reporting.
+  <br>
+  <br>
+	My second survey question was to get some hints if users prefer textual widgets or visual widgets in visualization tools. To address this question specifically, a dropdown menu was added to the map visualization in the new version of the tool used for A4. Users could type in the first few characters to get to the name, or they could just scroll down the list to find the name. This dropdown menu was an alternative to hovering over each and every state on the US map. Tasks 2 and 3 had scope for using the dropdown, and Task 3 was specifically designed to discourage users from using it by asking questions about states which had a name more than 9 characters long, assuming that the longer the name, the lesser would be the willingness of people to type it out or search for it in the dropdown. Users were also asked to rate their knowledge of the US geographical/political map keeping this research question in mind.
+	<br>
+	<br>
+	In the post task survey, the users were given another chance to include some more features that they would have liked to see, having used the tool. This was followed by a question which asked the users themselves to provide a percentage value as to how many of their expected features did the tool have. This avoided any kind of ambiguity that may arise if I were to read their expectations and decide how many of them were met in my tool.
+	<br>
+	<br>
+	Scores on a scale of 10 were also collected to know the background of the users, to get an idea of the perceived ease of use of the tool and the overall experience.
+	The interface was logged to get the task completion time as well as the widget usage.
+	<br>
+	<br>
+	Before the users could use the tool, I gave them a walkthrough of the tool myself. This was done because there were some glitches/bugs in the tool which I did not want the users to spend their time figuring out a way around.
+	<br>
+	<br>
+	A total of 11 participants were included in the study, of which 5 were male and 6 were female. All of them are currrently enrolled in computer science programs.
+  </p>
+</section>
+
+
+<section>
+  <h2>Discoveries &amp; Insights</h2>
+	<p>
+    	Effectiveness of the tool for exploratory analysis in 2 parts - answer objective questions and enabling pattern finding or open-ended exploration
+	</p>
+  <div class="entry">
+    <img src="./accuracyVsTime.png">
+    <p class="caption">
+    <i>Fig 1: Task accuracy vs task completion time for only the objective questions (1,2,3 and 5) which have a definite answer</i>
+    </p> As can be seen in the plot, there is very slight positive correlation between the task accuracy and the task completion time for the objective tasks. Considering the low sample count, we cannot have a statistically significant result, but we could say here that if users spend more time on a question, they would eventually get the answer right. One finding from my observation of the participants using the tool was that most mistakes were made due to not being able to verify what attribute was being considered in the task - 'instances', 'injuries' or 'deaths'. Even though, the attribute being visualized was specified in the visualizations in the form of text, I believe the text was not catching the attention of the participants. Probably, those who were carefully reading the visualization description, or verifying it, got their answers right at the cost of more task completion time. This could also affect another evaluation metric of the tool - intuitiveness
+    <p>
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="./intuitivenessVsTime.png">
+    <p class="caption">
+    <i>Fig 2: Intuitiveness rating of the interface vs task completion time for all 5 tasks</i>
+    </p>
+    <p>
+    	Intuitiveness could be described as the ease of navigating through the interface. From the plot, we can say that people who spent that extra time to get their answer right, probably realised that the tool design was not as intuitive as it could have been. So the extra efforts could be said to have made them rate the tool low on intuitivity. The need to put in that extra effort to verify the correctness of their answers is in itself a sign of low intuitivity of the tool, and those who cared enough to verify their answers, probably realised this. That is why we also see a slight negative trend between Intuitiveness and Task Accuracy. One more finding from observing users interact with the tool was that many of them were failing to notice that the range of the time slider was written at the ends of the slider field. This could be one of the reasons why they found the design to be less intuitive.
+    </p>
+    <img src="./intuitivenessVsAccuracy.png">
+    <p class="caption">
+    <i>Fig 3: Intuitiveness rating of the interface vs task completion time for all 5 tasks</i>
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="./textualVsVisual.png">
+    <p class="caption">
+    <i>Fig 4: Do people prefer textual widgets over visual widgets?</i>
+    </p>
+    <p>Although this is not enough data to conclude on this as a statistically significant result, but a trend can be seen here. People who are less confident about their knowledge of US geographical map, prefer using the dropdown and do not try to spend time hovering over the states. This is in spite of the required state names being at least 9 characters long, which I assumed would discourage them from using the dropdown. So, from this plot, we can say that when users know a sure shot faster way of getting to their answer by using some means which might be heavy in terms of cognition (typing/reading the dropdown), they will till choose that means over the time consuming but cognitively easy one (hovering over the map). It might happen that some users happen to know exactly where a particular state is because maybe they come from there. To handle this possibility, the state in question for Task 3 was randomized between Minnesota, Louisiana, Connecticut, Wisconsin, Rhode Island and Tennessee. 
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="./miscStats.png">
+    <p class="caption">
+    <i>Fig 5: Miscellaneous aggregate statistics expressed as a percentage value</i>
+    </p>
+    <p>The above plot shows some aggregate statistics. Around 94% of the participants felt that the tool had all the features that they were expecting it to have before using it. Although the tool had almost all the features expected by the users, the design was not perceived as intuitive as could have been made possible -  a score of 85% for intuitiveness of the tool. Around 70% of the users (8/11) answered the open ended Task 4 question elaborately. This could either be because the tool was difficult to use and was thus discouraging the users from performing exploratory analysis, or there really was no "geographical pattern with respect to time" that the question was asking them to find. Overall experience would include both the tool and the survey questions and participants gave it an average rating of ~90%. I also got qualitative feedback that my survey was one of the few surveys which were taking a long time to complete.
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="./commonFeedback.png">
+    <p class="caption">
+    <i>Fig 6: Some common qualitative feedback keywords and their count of occurrence</i>
+    </p>
+    <p>
+    	<b>Bar charts</b> - updates to bar chart were not tied to the time range slider owing to interface lag issues. This issue was one of the reason why I had to walk the users through the tool. It turned out I primed them into giving this as a feedback. Although a mistake on my part, this would make a sensible feedback to have, if I have the map tied with the time slider, why not also have the bar chart tied to it? Some users also suggested grouping and sorting of the bars.
+    	<br>
+    	<br>
+    	<b>Normalized statistics</b> - the color that was being assigned to every state for the visualized aggregate value in the chloropleth, was not normalized with respect to the area of the state, which would make sense to do when visualizing instance count; or with respect to the injury count or death count, which would make sense when visualizing total injuries or deaths in a state. Having a chloropleth does introduce the issue of lie factor, and normalizing the statistics will surely help in putting forth a picture which is closer to reality
+    	<br>
+    	<br>
+    	<b>Color scale</b> - task 5 was intended to make the users critique the linear interpolation of colors over the range of possible values, by asking them to find the state with the lowest value for some attribute. The distribution of the attribute values was almost uniform in 3/4th of the states making this task difficult to perform, as they were now comparing a lot of lighter shades. As a result, a couple of users did notice that the color assignment could have been improved. Although this would also come under asking leading questions, it was done more with the intention to make the users cover each and every aspect of the tool.
+    </p>
+  </div>
+
+</section>
+<section>
+  <h2>Reflection</h2>
+  <div class="entry">
+    <h3>Three Concrete Takeaways</h3>
+    <p>
+      <b>TAKEAWAY 1: Better placement of text/widgets to make user navigation easier</b></li>
+      <p>
+      	From my observations of users using the tool, I realised that the textual descriptions of the modifications in the visualizations, although made available, were either not highlighted to the user or were not placed appropriately, which made the user miss it completely. Another way of conveying these changes could have been to make the radio boxes in the details panel bigger or easily visible. Further, by placing the radio boxes above the map, I could have had all the view controls in one place which could have made user navigation easier.
+      </p>
+    </p>
+    <p>
+      <b>TAKEAWAY 2: Normalizing Statistics</b></li>
+      <p>
+      	Chloropleth maps although good for visualizing geographical data, might introduce some errors due to the size of the regions being represented. In these cases, appropriate normalization should be performed to convey information which is closer to truth. Although, my dataset did not have the required data for performing normalization with respect to state area or population, it would be a good takeaway to keep in mind when designing visualizations.
+      </p>
+    </p>
+    <p>
+      <b>TAKEAWAY 3: Careful desinging of survey to avoid priming the participants to get desired results</b></li>
+      <p>
+      	I had started off my survey knowing that some of my methods and Tasks (3 and 5) had some amount of priming. I had not critically evaluated how much bias it might introduce in my survey results. I would like to keep this takeaway in mind to also evaluate if my questions are leading the users towards some obvious conclusions that I want to see.
+      </p>
+    </p>
+  </div>
+  <div class="entry">
+    <h3>Final Takeaway</h3>
+    <p>
+    	In terms of visualization tool design, I would say that placing the widgets, text and panels plays as important a role as choosing the visualizations themselves. If the sub-parts are not well placed, it might lead to bad user experience because placement affects the navigation flow. In terms of user study design, I would evaluate my questions or methods for possibly leading the participants into yielding a desired conclusion.
+    </p>
+  </div>
+</section>
+
+</div>
+
+
+</body></html>
