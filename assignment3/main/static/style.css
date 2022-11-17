@@ -54,12 +54,13 @@ input[type="radio"]{
 }
 
 .slid {
-  width: 80%;
+  margin: auto;
+  width: 50%;
   display: inline-block;
 }
 
 #slider{
-    margin: auto;
+   margin: auto;
    position: relative;
    height:30px;
    background-color: #eeeef5;

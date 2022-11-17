@@ -74,7 +74,7 @@ var rangeBegin = 1990;
 var rangeEnd = 2000;
 var stateFipGlobal = "1";
 
-var slider = createD3RangeSlider(1950, 2019, "#slider");
+var slider = createD3RangeSlider(1950, 2022, "#slider");
 slider.range(rangeBegin, rangeEnd);
 d3.select("#slider-text").text(rangeBegin + " - " + rangeEnd);
 slider.onChange(function(newRange) {
